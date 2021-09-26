@@ -1,0 +1,8 @@
+lib/
+lib64
+share/
+bin/
+include/
+__pycache__/
+.pytest_cache/
+pyvenv.cfg
