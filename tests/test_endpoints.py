@@ -4,7 +4,7 @@ import pytest
 # LOCAL MODULES
 from app import app
 
-# SETUP & FIXTURES
+# FIXTURES
 @pytest.fixture
 def client():
     with app.test_client() as client:

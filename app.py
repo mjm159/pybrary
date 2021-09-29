@@ -1,11 +1,13 @@
 # 3RD PARTY MODULES
 from flask import Flask
 
+from PyBrary import db
+
 # SETUP
 app = Flask(__name__)
 
 # BASELINE ENDPOINTS
-@app.route("/heartbeat", methods=['GET'])
+@app.route("/api/v1/heartbeat", methods=['GET'])
 def heartbeat():
     return { "status": "OK" }
 
@@ -14,13 +16,13 @@ def heartbeat():
 def users():
     return { "status": "OK" }
 
-@app.route("/api/v1/users/<email>", methods=['GET', 'PUT'])
-def user(email):
+@app.route("/api/v1/users/<id>", methods=['GET', 'PUT', 'DELETE'])
+def user(id):
     return { "status": "OK" }
 
 # WISHLIST ENDPOINTS
-@app.route("/api/v1/users/<email>/wishlist", methods=['GET', 'PUT'])
-def wishlist(email):
+@app.route("/api/v1/users/<id>/wishlist", methods=['GET', 'PUT'])
+def wishlist(id):
     return { "status": "OK" }
 
 # BOOK ENDPOINTS
@@ -28,6 +30,6 @@ def wishlist(email):
 def books():
     return { "status": "OK" }
 
-@app.route("/api/v1/books/<book>", methods=['GET', 'PUT'])
-def book(book):
+@app.route("/api/v1/books/<isbn>", methods=['GET', 'PUT', 'DELETE'])
+def book(isbn):
     return { "status": "OK" }
