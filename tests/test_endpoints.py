@@ -12,9 +12,18 @@ def client():
 
 # BASELINE TESTS
 def test_heartbeat(client):
-    response = client.get('/heartbeat')
+    response = client.get('/api/v1/heartbeat')
     assert response.status_code == 200
 
 # /api/v1/users* ENDPOINT TESTS
+def test_add_user(client):
+    data = {
+        'first_name': 'bob',
+        'last_name': 'quink',
+        'email': 'bobquink@bob.com',
+        'password': 'bobiscool'
+    }
+    response = client.post('/api/v1/users', json=data)
+    assert response.status_code == 200
 
 # /api/v1/books* ENDPOINT TESTS

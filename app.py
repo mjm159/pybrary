@@ -1,14 +1,16 @@
 # STANDARD LIBRARY
-import configparser
+import json
 
 # 3RD PARTY MODULES
-from flask import Flask
+from flask import Flask, request
 
 # LOCAL MODULES
-from PyBrary
+from PyBrary import db
+
 
 # SETUP
 app = Flask(__name__)
+
 
 # BASELINE ENDPOINTS
 @app.route("/api/v1/heartbeat", methods=['GET'])
@@ -18,7 +20,12 @@ def heartbeat():
 # USER ENDPOINTS
 @app.route("/api/v1/users", methods=['GET', 'POST'])
 def users():
-    return { "status": "OK" }
+    if request.method == 'POST':
+        res = db.add_user(**request.json)
+        if res:
+            return { "status": "OK" }
+        else:
+            return {"status": "FAILED"}
 
 @app.route("/api/v1/users/<id>", methods=['GET', 'PUT', 'DELETE'])
 def user(id):
