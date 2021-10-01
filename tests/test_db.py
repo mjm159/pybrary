@@ -40,3 +40,20 @@ def test_add_user(setup_database):
         )
     assert res['STATUS'] == db.Response.USER_CREATED
 
+def test_add_duplicate_user(setup_database):
+    user = TEST_USER['AGATHA']
+    res = db.add_user(
+        first_name=user['first_name'],
+        last_name=user['last_name'],
+        email=user['email'],
+        password=['password']
+        )
+    assert res['STATUS'] == db.Response.USER_CREATED  
+    res = db.add_user(
+        first_name=user['first_name'],
+        last_name=user['last_name'],
+        email=user['email'],
+        password=['password']
+        )
+    assert res['STATUS'] == db.Response.ALREADY_EXISTS
+    
