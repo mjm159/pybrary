@@ -1,11 +1,11 @@
 {
-    "Toast": {
+    "TOAST": {
         "title": "Sherlock Holmes and The Case of the Missing Loaf",
         "author": "Sir Author Cumberbatch",
         "isbn": "2548639871",
         "publication_date": "1985-05-15"
     },
-     "Ruff": {
+     "RUFF": {
         "title": "Case Study: Dogs Still Unable to Read Technical Manuals",
         "author": "Bads Cience",
         "isbn": "2548662871",

@@ -1,6 +1,7 @@
 # STANDARD LIBRARY
 import json
 import os
+import pdb
 
 # 3RD PARTY MODULES
 from flask import Flask
@@ -25,7 +26,8 @@ class Response:
     WISHLIST_UPDATED = "WISHLIST UPDATED"
     ALREADY_EXISTS = "ALREADY EXISTS"
     NONEXISTENT = "NONEXISTENT"
-    USER_REMOVED = "USER_REMOVED"
+    USER_REMOVED = "USER REMOVED"
+    BOOK_REMOVED = "BOOK REMOVED"
 
 # DECORATORS
 def db_handler(table_name=None):
@@ -56,7 +58,7 @@ def get_user(table:TinyDB.table, email:str) -> dict:
     """Get user details
     """
     if not table.contains(USER.email == email):
-        return make_response(Response.NONEXISTENT)
+        return make_response(status=Response.NONEXISTENT)
     data = table.get(USER.email == email)
     return make_response(status=Response.SUCCESS, data=data)
 
@@ -71,7 +73,7 @@ def add_user(table:TinyDB.table, first_name:str, last_name:str, email:str, passw
     """Adds new user to database
     """
     if table.contains(USER.email == email):
-        return make_response(Response.ALREADY_EXISTS)
+        return make_response(status=Response.ALREADY_EXISTS)
     user = {
         'first_name': first_name,
         'last_name': last_name,
@@ -79,18 +81,56 @@ def add_user(table:TinyDB.table, first_name:str, last_name:str, email:str, passw
         'password': password
     }
     table.insert(user)
-    return make_response(Response.USER_CREATED)
+    return make_response(status=Response.USER_CREATED)
 
 @db_handler(table_name=USERS_TABLE)
 def remove_user(table:TinyDB.table, email:str) -> dict:
     """Removes a user by email
     """
     if not table.contains(USER.email == email):
-        return make_response(Response.NONEXISTENT)
+        return make_response(status=Response.NONEXISTENT)
     table.remove(USER.email == email)
-    return make_response(Response.USER_REMOVED)
+    return make_response(status=Response.USER_REMOVED)
 
 
 # WISHLIST SECTION
 
 # BOOKS SECTION
+@db_handler(table_name=BOOKS_TABLE)
+def get_book(table:TinyDB.table, isbn:str) -> dict:
+    """Get book details
+    """
+    if not table.contains(BOOK.isbn == isbn):
+        return make_response(status=Response.NONEXISTENT)
+    data = table.get(BOOK.isbn == isbn)
+    return make_response(status=Response.SUCCESS, data=data)
+
+@db_handler(table_name=BOOKS_TABLE)
+def get_all_books(table:TinyDB.table) -> dict:
+    """Returns a dict with all books in DB
+    """
+    return make_response(status=Response.SUCCESS, data=table.all())
+
+@db_handler(table_name=BOOKS_TABLE)
+def add_book(table:TinyDB.table, title:str, author:str, isbn:str, publication_date:str) -> dict:
+    """Adds new book to database
+    """
+    if table.contains(BOOK.isbn == isbn):
+        return make_response(status=Response.ALREADY_EXISTS)
+    book = {
+        'title': title,
+        'author': author,
+        'isbn': isbn,
+        'publication_date': publication_date
+    }
+    table.insert(book)
+    return make_response(status=Response.BOOK_CREATED)
+
+@db_handler(table_name=BOOKS_TABLE)
+def remove_book(table:TinyDB.table, isbn:str) -> dict:
+    """Removes a book by isbn
+    """
+    if not table.contains(BOOK.isbn == isbn):
+        return make_response(status=Response.NONEXISTENT)
+    table.remove(BOOK.isbn == isbn)
+    return make_response(status=Response.BOOK_REMOVED)
