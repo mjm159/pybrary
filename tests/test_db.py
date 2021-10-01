@@ -53,6 +53,11 @@ def setup_database_with_betty(setup_database):
         )
 
 # USERS SECTION
+def test_get_user(setup_database):
+    ada = EXAMPLE_USERS[0]
+    res = db.get_user(email=ada['email'])
+    assert ada == res['DATA']
+
 def test_add_user(setup_database):
     user = TEST_USER['BOB']
     res = db.add_user(

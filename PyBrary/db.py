@@ -50,7 +50,22 @@ def make_response(status:str, data:dict=None) -> dict:
     return {'STATUS': status, 'DATA': data}
 
 
-# USER RELATED FUNCTIONS
+# USERS SECTION
+@db_handler(table_name=USERS_TABLE)
+def get_user(table:TinyDB.table, email:str) -> dict:
+    """Get user details
+    """
+    if not table.contains(USER.email == email):
+        return make_response(Response.NONEXISTENT)
+    data = table.get(USER.email == email)
+    return make_response(status=Response.SUCCESS, data=data)
+
+@db_handler(table_name=USERS_TABLE)
+def get_all_users(table:TinyDB.table) -> dict:
+    """Returns a dict with all users in DB
+    """
+    return make_response(status=Response.SUCCESS, data=table.all())
+
 @db_handler(table_name=USERS_TABLE)
 def add_user(table:TinyDB.table, first_name:str, last_name:str, email:str, password:str) -> dict:
     """Adds new user to database
@@ -75,8 +90,7 @@ def remove_user(table:TinyDB.table, email:str) -> dict:
     table.remove(USER.email == email)
     return make_response(Response.USER_REMOVED)
 
-@db_handler(table_name=USERS_TABLE)
-def get_all_users(table:TinyDB.table) -> dict:
-    """Returns a dict with all users in DB
-    """
-    return make_response(status=Response.SUCCESS, data=table.all())
+
+# WISHLIST SECTION
+
+# BOOKS SECTION
