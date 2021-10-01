@@ -24,6 +24,8 @@ class Response:
     BOOK_CREATED = "BOOK CREATED"
     WISHLIST_UPDATED = "WISHLIST UPDATED"
     ALREADY_EXISTS = "ALREADY EXISTS"
+    NONEXISTENT = "NONEXISTENT"
+    USER_REMOVED = "USER_REMOVED"
 
 # DECORATORS
 def db_handler(table_name=None):
@@ -63,3 +65,12 @@ def add_user(table:TinyDB.table, first_name:str, last_name:str, email:str, passw
     }
     table.insert(user)
     return make_response(Response.USER_CREATED)
+
+@db_handler(table_name=USERS_TABLE)
+def remove_user(table:TinyDB.table, email:str) -> dict:
+    """Removes a user by email
+    """
+    if not table.contains(USER.email == email):
+        return make_response(Response.NONEXISTENT)
+    table.remove(USER.email == email)
+    return make_response(Response.USER_REMOVED)
