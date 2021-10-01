@@ -74,3 +74,9 @@ def remove_user(table:TinyDB.table, email:str) -> dict:
         return make_response(Response.NONEXISTENT)
     table.remove(USER.email == email)
     return make_response(Response.USER_REMOVED)
+
+@db_handler(table_name=USERS_TABLE)
+def get_all_users(table:TinyDB.table) -> dict:
+    """Returns a dict with all users in DB
+    """
+    return make_response(status=Response.SUCCESS, data=table.all())
