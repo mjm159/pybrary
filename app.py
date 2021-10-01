@@ -21,11 +21,9 @@ def heartbeat():
 @app.route("/api/v1/users", methods=['GET', 'POST'])
 def users():
     if request.method == 'POST':
+         
         res = db.add_user(**request.json)
-        if res:
-            return { "status": "OK" }
-        else:
-            return {"status": "FAILED"}
+       
 
 @app.route("/api/v1/users/<id>", methods=['GET', 'PUT', 'DELETE'])
 def user(id):

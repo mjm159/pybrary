@@ -1,0 +1,20 @@
+{
+    "Toast": {
+        "title": "Sherlock Holmes and The Case of the Missing Loaf",
+        "author": "Sir Author Cumberbatch",
+        "isbn": "2548639871",
+        "publication_date": "1985-05-15"
+    },
+     "Ruff": {
+        "title": "Case Study: Dogs Still Unable to Read Technical Manuals",
+        "author": "Bads Cience",
+        "isbn": "2548662871",
+        "publication_date": "1986-06-15"
+    },
+     "N2O": {
+        "title": "No Laughing Matter",
+        "author": "Cash MaBreth",
+        "isbn": "9983639871",
+        "publication_date": "1987-07-15"
+    }
+}
