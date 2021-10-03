@@ -109,10 +109,7 @@ def update_user(table:TinyDB.table, email:str, data:dict) -> dict:
     if not table.contains(USER.email == email):
         return make_response(status=Response.USER_NONEXISTENT)
     result = table.update(data, USER.email == email)
-    if result[0] == 1:
-        return make_response(status=Response.USER_UPDATED)
-    else:
-        return make_response(status=Response.FAILURE)
+    return make_response(status=Response.USER_UPDATED)
 
 @db_handler(table_name=USERS_TABLE)
 def remove_user(table:TinyDB.table, email:str) -> dict:
@@ -151,6 +148,19 @@ def add_to_wishlist(table:TinyDB.table, email:str, isbn:str) -> dict:
         return make_response(status=Response.WISHLIST_UPDATED)
     return update_results
 
+@db_handler(table_name=USERS_TABLE)
+def remove_from_wishlist(table:TinyDB.table, email:str, isbn:str) -> dict:
+    """Remove book from user's wishlist
+    """
+    user_search_results = get_user(email=email)
+    if user_search_results['STATUS'] != Response.SUCCESS:
+        return user_search_results
+    user_data = user_search_results['DATA']
+    user_data['wishlist'].pop(isbn, None)
+    update_results = update_user(email=email, data=user_data)
+    if update_results['STATUS'] == Response.USER_UPDATED:
+        return make_response(status=Response.WISHLIST_UPDATED)
+    return update_results
 
 # BOOKS SECTION
 @db_handler(table_name=BOOKS_TABLE)

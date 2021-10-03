@@ -133,6 +133,16 @@ def test_add_to_wishlist(setup_database):
     wishlist = db.get_wishlist(email=user_0['email'])
     assert wishlist_item in wishlist['DATA']
 
+def test_remove_from_wishlist(setup_database):
+    wishlist_item = "0425069974"
+    email = "alan@turingcomplete.com"
+    wishlist = db.get_wishlist(email=email)
+    assert wishlist_item in wishlist['DATA']
+    res = db.remove_from_wishlist(email=email, isbn=wishlist_item)
+    assert res['STATUS'] == db.Response.WISHLIST_UPDATED
+    updated_wishlist = db.get_wishlist(email=email)
+    assert wishlist_item not in updated_wishlist['DATA']
+
 # BOOKS SECTION
 def test_get_book(setup_database):
     book_0 = EXAMPLE_BOOKS[0]
