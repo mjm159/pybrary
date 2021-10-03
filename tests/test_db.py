@@ -88,7 +88,7 @@ def test_add_duplicate_user(setup_database_with_betty):
         last_name=user['last_name'],
         email=user['email'],
         password=['password'])
-    assert res['STATUS'] == db.Response.ALREADY_EXISTS
+    assert res['STATUS'] == db.Response.USER_ALREADY_EXISTS
 
 def test_update_user(setup_database):
     user_email = 'ada@firstprogrammer.com'
@@ -114,14 +114,24 @@ def test_remove_nonexistant_user(setup_database):
     fake_email = 'faker_fakerstein@fake.fk'
     assert not user_exists(email=fake_email)
     res = db.remove_user(email=fake_email)
-    assert res['STATUS'] == db.Response.NONEXISTENT
+    assert res['STATUS'] == db.Response.USER_NONEXISTENT
 
 
 # WISHLIST SECTION
 def test_get_wishlist(setup_database):
+    user_1 = EXAMPLE_USERS[1]
+    wishlist = db.get_wishlist(email=user_1['email'])
+    assert wishlist['DATA'] == user_1['wishlist']
+
+def test_add_to_wishlist(setup_database):
+    wishlist_item = "0425069974"
     user_0 = EXAMPLE_USERS[0]
     wishlist = db.get_wishlist(email=user_0['email'])
-    assert wishlist['DATA'] == user_0['wishlist']
+    assert wishlist_item not in wishlist['DATA']
+    res = db.add_to_wishlist(email=user_0['email'], isbn=wishlist_item)
+    assert res['STATUS'] == db.Response.WISHLIST_UPDATED
+    wishlist = db.get_wishlist(email=user_0['email'])
+    assert wishlist_item in wishlist['DATA']
 
 # BOOKS SECTION
 def test_get_book(setup_database):
@@ -153,7 +163,7 @@ def test_add_duplicate_book(setup_database_with_n20):
         author=book['author'],
         isbn=book['isbn'],
         publication_date=book['publication_date'])
-    assert res['STATUS'] == db.Response.ALREADY_EXISTS
+    assert res['STATUS'] == db.Response.BOOK_ALREADY_EXISTS
 
 def test_remove_existing_book(setup_database_with_n20):
     book = TEST_BOOK['N2O']
@@ -165,5 +175,5 @@ def test_remove_nonexistant_book(setup_database):
     fake_isbn = '7777777777'
     assert not book_exists(isbn=fake_isbn)
     res = db.remove_book(isbn=fake_isbn)
-    assert res['STATUS'] == db.Response.NONEXISTENT
+    assert res['STATUS'] == db.Response.BOOK_NONEXISTENT
 
