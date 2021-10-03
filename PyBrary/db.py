@@ -21,6 +21,7 @@ BOOKS_TABLE = config.BOOKS_TABLE_NAME
 # RESPONSE DEFINITIONS
 class Response:
     SUCCESS = "SUCCESS"
+    FAILURE = "FAILURE"
     USER_CREATED = "USER CREATED"
     BOOK_CREATED = "BOOK CREATED"
     WISHLIST_UPDATED = "WISHLIST UPDATED"
@@ -31,6 +32,8 @@ class Response:
 
 # DECORATORS
 def db_handler(table_name=None):
+    """Sets up and returns a connection with the database
+    """
     def inner(func):
         def wrapper(*args, **kwargs):
             with TinyDB(DATABASE) as conn:
@@ -84,6 +87,27 @@ def add_user(table:TinyDB.table, first_name:str, last_name:str, email:str, passw
     return make_response(status=Response.USER_CREATED)
 
 @db_handler(table_name=USERS_TABLE)
+def update_user(table:TinyDB.table, email:str, data:dict) -> dict:
+    """Update user fields
+
+    for `data`, expecting a dict representing a user, e.g.:
+        {
+            "first_name": "Ada",
+            "last_name": "Lovelace",
+            "email": "ada@firstprogrammer.com",
+            "password": "BabbageEngine",
+            "wishlist": []
+        }
+    """
+    if not table.contains(USER.email == email):
+        return make_response(status=Response.NONEXISTENT)
+    result = table.update(data, USER.email == email)
+    if result[0] == 1:
+        return make_response(status=Response.SUCCESS)
+    else:
+        return make_response(status=Response.FAILURE)
+
+@db_handler(table_name=USERS_TABLE)
 def remove_user(table:TinyDB.table, email:str) -> dict:
     """Removes a user by email
     """
@@ -92,8 +116,22 @@ def remove_user(table:TinyDB.table, email:str) -> dict:
     table.remove(USER.email == email)
     return make_response(status=Response.USER_REMOVED)
 
-
 # WISHLIST SECTION
+@db_handler(table_name=BOOKS_TABLE)
+def get_wishlist(table:TinyDB.table, email:str) -> dict:
+    """Retrieve wishlist for specific user
+    """
+    user = get_user(email=email)
+    status = user['STATUS']
+    if status == Response.NONEXISTENT:
+        return make_response(status=status)
+    return make_response(status=Response.SUCCESS, data=user['DATA']['wishlist'])
+
+@db_handler(table_name=BOOKS_TABLE)
+def add_to_wishlist(table:TinyDB.table, email:str, isbn:str) -> dict:
+    """Add book to user's wishlist
+    """
+    pass
 
 # BOOKS SECTION
 @db_handler(table_name=BOOKS_TABLE)

@@ -89,6 +89,20 @@ def test_add_duplicate_user(setup_database_with_betty):
         email=user['email'],
         password=['password'])
     assert res['STATUS'] == db.Response.ALREADY_EXISTS
+
+def test_update_user(setup_database):
+    user_email = 'ada@firstprogrammer.com'
+    user_update_data = {
+        'first_name': 'Derpity',
+        'last_name': 'Derpenstein',
+        'email': 'ada@firstprogrammer.com',
+        'password': 'BabbageEngine',
+        'wishlist': []
+    }
+    res = db.update_user(email=user_email, data=user_update_data)
+    test_results = db.get_user(email=user_email)
+    assert test_results['STATUS'] == db.Response.SUCCESS
+    assert test_results['DATA']['first_name'] == user_update_data['first_name']
     
 def test_remove_existing_user(setup_database_with_betty):
     user = TEST_USER['BETTY']
@@ -102,10 +116,17 @@ def test_remove_nonexistant_user(setup_database):
     res = db.remove_user(email=fake_email)
     assert res['STATUS'] == db.Response.NONEXISTENT
 
+
+# WISHLIST SECTION
+def test_get_wishlist(setup_database):
+    user_0 = EXAMPLE_USERS[0]
+    wishlist = db.get_wishlist(email=user_0['email'])
+    assert wishlist['DATA'] == user_0['wishlist']
+
 # BOOKS SECTION
 def test_get_book(setup_database):
     book_0 = EXAMPLE_BOOKS[0]
-    res = db.get_book(book_0['isbn'])
+    res = db.get_book(isbn=book_0['isbn'])
     assert book_0 == res['DATA']
 
 def test_get_all_books(setup_database):

@@ -55,8 +55,7 @@
             "last_name": "Lovelace",
             "email": "ada@firstprogrammer.com",
             "password": "BabbageEngine",
-            "wishlist": [
-            ]
+            "wishlist": []
         },
         {
             "first_name": "Alan",
@@ -64,8 +63,8 @@
             "email": "alan@turingcomplete.com",
             "password": "PoisonApple",
             "wishlist": [
-                "0425069974",
-                "0765308630"
+                ["0425069974", "Diaspora"],
+                ["0765308630", "The Draco Tavern"]
             ]
         },
         {
@@ -74,9 +73,9 @@
             "email": "john@exploretheuniverse.com",
             "password": "ProbesAreNeat",
             "wishlist": [
-                "0425069974",
-                "0593395565",
-                "1680680587"
+                ["0425069974", "Diaspora"],
+                ["0593395565", "Hail Mary"],
+                ["1680680587", "We Are Legion (We Are Bob)"]
             ]
         }
     ]
