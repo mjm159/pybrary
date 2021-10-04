@@ -3,18 +3,21 @@
         "first_name": "Robert",
         "last_name": "Quink",
         "email": "bobquink@bob.com",
-        "password": "quinklebell"
+        "password": "quinklebell",
+        "wishlist": {}
     },
     "BETTY": {
         "first_name": "Betty",
         "last_name": "White",
         "email": "betty@notthefamousone.com",
-        "password": "MislabledFanmail"
+        "password": "MislabledFanmail",
+        "wishlist": {}
     },
     "RICH": {
         "first_name": "Richard",
         "last_name": "Swinger",
         "email": "richard@unfortunatenicknames.com",
-        "password": "PittBullsAreActuallyReallySweet"
+        "password": "PittBullsAreActuallyReallySweet",
+        "wishlist": {}
     }
 }

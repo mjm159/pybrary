@@ -24,3 +24,5 @@ pip3 install -r requirements.txt
 - Author endpoint that returns a list of all books by an author available in the PyBrary
 - Input sanitization
 - Exception handling
+- Add logging
+- Move away from using emails as identification

@@ -34,6 +34,7 @@ class Response:
     BOOK_NONEXISTENT = "BOOK DOES NOT EXIST"
     BOOK_ALREADY_EXISTS = "BOOK ALREADY EXISTS"
     BOOK_REMOVED = "BOOK REMOVED"
+    BOOK_UPDATED = "BOOK UPDATED"
     # WISHLIST
     WISHLIST_UPDATED = "WISHLIST UPDATED"
 
@@ -79,7 +80,7 @@ def get_all_users(table:TinyDB.table) -> dict:
     return make_response(status=Response.SUCCESS, data=table.all())
 
 @db_handler(table_name=USERS_TABLE)
-def add_user(table:TinyDB.table, first_name:str, last_name:str, email:str, password:str) -> dict:
+def add_user(table:TinyDB.table, first_name:str, last_name:str, email:str, password:str, wishlist:dict) -> dict:
     """Adds new user to database
     """
     if table.contains(USER.email == email):
@@ -88,7 +89,8 @@ def add_user(table:TinyDB.table, first_name:str, last_name:str, email:str, passw
         'first_name': first_name,
         'last_name': last_name,
         'email': email,
-        'password': password
+        'password': password,
+        'wishlist': wishlist
     }
     table.insert(user)
     return make_response(status=Response.USER_CREATED)

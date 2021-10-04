@@ -47,7 +47,8 @@ def setup_database_with_betty(setup_database):
         first_name=user['first_name'],
         last_name=user['last_name'],
         email=user['email'],
-        password=['password'])
+        password=user['password'],
+        wishlist=user['wishlist'])
 
 @pytest.fixture
 def setup_database_with_n20(setup_database):
@@ -76,7 +77,8 @@ def test_add_user(setup_database):
         first_name=user['first_name'],
         last_name=user['last_name'],
         email=user['email'],
-        password=['password'])
+        password=user['password'],
+        wishlist=user['wishlist'])
     assert res['STATUS'] == db.Response.USER_CREATED
     assert user_exists(email=user['email'])
 
@@ -87,7 +89,8 @@ def test_add_duplicate_user(setup_database_with_betty):
         first_name=user['first_name'],
         last_name=user['last_name'],
         email=user['email'],
-        password=['password'])
+        password=user['password'],
+        wishlist=user['wishlist'])
     assert res['STATUS'] == db.Response.USER_ALREADY_EXISTS
 
 def test_update_user(setup_database):
@@ -186,4 +189,3 @@ def test_remove_nonexistant_book(setup_database):
     assert not book_exists(isbn=fake_isbn)
     res = db.remove_book(isbn=fake_isbn)
     assert res['STATUS'] == db.Response.BOOK_NONEXISTENT
-
